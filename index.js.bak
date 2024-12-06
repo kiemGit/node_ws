@@ -1,0 +1,34 @@
+const WebSocket = require('ws');
+const fs = require('fs');
+
+// Load custom CA or server certificate
+const caCert = fs.readFileSync('ca.cer');
+
+// Replace with your WebSocket server URL
+const serverUrl = 'wss://192.168.0.22';
+
+const options = {
+  ca: caCert, // Provide the CA certificate
+  // Optionally provide the client certificate and key if mutual TLS is required
+  cert: fs.readFileSync('gdsap.work.gd.cer'),
+  key: fs.readFileSync('gdsap.work.gd.key'),
+};
+
+// Create WebSocket connection with custom certificate validation
+const ws = new WebSocket(serverUrl, options);
+
+ws.on('open', () => {
+  console.log('Secure WebSocket connection established with custom certificate validation');
+});
+
+ws.on('message', (message) => {
+  console.log('Message received:', message);
+});
+
+ws.on('error', (error) => {
+  console.error('WebSocket error:', error);
+});
+
+ws.on('close', () => {
+  console.log('Connection closed');
+});

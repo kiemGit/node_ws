@@ -1,0 +1,23 @@
+const fs = require('fs');
+const WebSocket = require('ws');
+
+const ws = new WebSocket('wss://gdsap.work.gd.', {
+    rejectUnauthorized: false, // Ignore certificate validation
+});
+
+ws.on('open', () => {
+  console.log('Secure WebSocket connection established');
+
+  // Send a message to the server
+  const data = {
+    type: 'greeting',
+    message: 'Hello, secure server!',
+  };
+
+  ws.send(JSON.stringify(data));
+  console.log('Message sent:', data);
+});
+
+ws.on('error', (error) => {
+  console.error('WebSocket error:', error);
+});
